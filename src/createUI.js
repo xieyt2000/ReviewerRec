@@ -173,7 +173,7 @@ function createUI(show) {
   row = document.createElement('tr');
   col = document.createElement('td');
   col.colSpan = "2";
-  col.appendChild(document.createTextNode("关键词 (用 \",\" 分隔):"));
+  col.appendChild(document.createTextNode("关键词 (用 \", \" 分隔):"));
   img = document.createElement("input");
   img.value = 0;
   img.type = "image";

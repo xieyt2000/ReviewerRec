@@ -28,7 +28,7 @@ function analyze() {
     try {
       if (tbEntries[i].innerText.match("英文关键词")) {
         enKeywordsStr = tbEntries[i].cells[1].innerText;
-        enKeywordsStr = enKeywordsStr.replace(/;/g, ",");
+        enKeywordsStr = enKeywordsStr.replace(/;/g, ", ");
         enKeywordsStr = enKeywordsStr.replace(/^\s+|\s+$/g, "");
       } else if (tbEntries[i].innerText.match("关键词")) {
         var chKeywordStr = tbEntries[i].cells[1].innerText;
@@ -46,7 +46,7 @@ function analyze() {
   }
   if (enKeywordsStr != "") {
     info.push(enKeywordsStr);
-  } else {
+  } else {  //translate
     $.ajax({
       url: "https://apiv2.aminer.cn/magic",
       type: "POST",

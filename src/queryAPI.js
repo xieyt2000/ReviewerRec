@@ -9,7 +9,7 @@ function query() {
   document.getElementById('searchname').value = "";
   document.getElementById('rankorder').selectedIndex = 0;
   $('#rtb').empty();
-  var words = document.getElementById("keywords").value.split(",");
+  var words = document.getElementById("keywords").value.split(", ");
   window.sessionStorage.keywords0 = document.getElementById("keywords").value;
   window.sessionStorage.displaynum = "20";
   window.sessionStorage.inp1 = document.getElementById("hindex1").checked;
@@ -103,23 +103,6 @@ function getExpertList(words) {
     $.get(url, function (data, status) {
       statechange(data);
     });
-    //testNewAlgorithm();
-    function testNewAlgorithm() {
-      var url = "http://166.111.7.105:9005/api/reviewer/query"
-      var data = {
-        "query": words[i],
-        "size": 500,
-        "hindex1": h1,
-        "hindex2": h2
-      }
-      data.authors = JSON.parse(window.sessionStorage.authors)
-      $.ajax({
-        type: "POST",
-        url: url,
-        data: $.toJSON(data),
-        contentType: "application/json"
-      });
-    }
   }
 }
 
