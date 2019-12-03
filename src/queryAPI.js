@@ -2,6 +2,41 @@
 // part 2 :  Query API
 //---------------------------------
 
+function translateChWords(words) {
+  //check chinese and translate
+  var translateWordsRank = [] //chinese word rank in words[]
+  var translateWords = []
+  for (var i in words) {
+    if (escape(words[i]).indexOf("%u") >= 0) {
+      translateWordsRank.push(i);
+      translateWords.push(words[i]);
+    }
+  }
+  if (translateWordsRank.length > 0) {
+    $.ajax({
+      url: "https://apiv2.aminer.cn/magic",
+      type: "POST",
+      data: JSON.stringify([{
+        "action": "dm_intellwords.Translate",
+        "parameters": {
+          "query": translateWords
+        }
+      }]),
+      async: false,
+      success: function (data) {
+        var wordsArr = data.data[0].items[0];
+        var wordsStr = "";
+        for (var i in wordsArr) {
+          if (wordsArr[i].isTranslated) {
+            words[translateWordsRank[i]] = wordsArr[i].english;
+          }
+        }
+      }
+    })
+  }
+  return words;
+}
+
 function query() {
   $('#loading').show();
   $('#more').hide();
@@ -10,6 +45,7 @@ function query() {
   document.getElementById('rankorder').selectedIndex = 0;
   $('#rtb').empty();
   var words = document.getElementById("keywords").value.split(", ");
+  words = translateChWords(words);
   window.sessionStorage.keywords0 = document.getElementById("keywords").value;
   window.sessionStorage.displaynum = "20";
   window.sessionStorage.inp1 = document.getElementById("hindex1").checked;
