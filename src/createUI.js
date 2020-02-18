@@ -6,7 +6,7 @@ if (url.match("manuscriptcentral.com") != null)
 
 isreviewing = false;
 x = document.getElementsByClassName("redesigndetailsontext")[0];
-if (x != null)
+if (x != null || url == "https://mc.manuscriptcentral.com/tbd-cs")
   isreviewing = true;
 
 txt = $.ajax({url:chrome.extension.getURL("resource/scis.txt"), async : false}).responseText;
@@ -300,25 +300,23 @@ function createUI(show) {
   opt = document.createElement('option'); opt.text = 'Default'; opt.value = ""; sel.add(opt, null);
   col.appendChild(sel);
 
-  url = "https://raw.githubusercontent.com/thomas0809/ReviewerConfigure/master/journal.json"; 
-  $.get(url, function(data, status) {
-      var conf = JSON.parse(data);
-      var journal = window.location.href.replace(/.*\.manuscriptcentral\.com\//, '').replace(/[\/\?].*/, '');
-      //alert(journal);
-      if (!(journal in conf)) {
-        journal = "default";
-      }
-      sel = document.getElementById("roster");
-      sel.remove(0);
-      for (var i in conf[journal]['list']) {
-        var x = conf[journal]['list'][i];
-        var opt = document.createElement('option'); opt.text = x['name']; opt.value = x['id']; sel.add(opt, null);
-      }
-      sel.selectedIndex = conf[journal]['default'];
-      if (conf[journal]['option']) {
-        $(sel).show();
-      }
-  });
+  txt = $.ajax({url:chrome.extension.getURL("resource/rosterData.txt"), async : false}).responseText;
+  var conf = JSON.parse(txt);
+  var journal = window.location.href.replace(/.*\.manuscriptcentral\.com\//, '').replace(/[\/\?].*/, '');
+  //alert(journal);
+  if (!(journal in conf)) {
+    journal = "default";
+  }
+  sel.remove(0);
+  for (var i in conf[journal]['list']) {
+    var x = conf[journal]['list'][i];
+    var opt = document.createElement('option'); opt.text = x['name']; opt.value = x['id']; sel.add(opt, null);
+  }
+  sel.selectedIndex = conf[journal]['default'];
+  if (conf[journal]['option']) {
+    $(sel).show();
+  }
+
 
   /*sub = document.createElement("input");
   sub.type = "image"; sub.src = chrome.extension.getURL("resource/title.png");
