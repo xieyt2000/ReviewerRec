@@ -1,13 +1,10 @@
 
 url = window.location.href;
 ismanuscript = false;
-if (url.match("manuscriptcentral.com") != null)
+if (url.match("editorialmanager.com") != null) {
   ismanuscript = true;
-
-isreviewing = false;
-x = document.getElementsByClassName("redesigndetailsontext")[0];
-if (x != null)
   isreviewing = true;
+}
 
 txt = $.ajax({url:chrome.extension.getURL("resource/scis.txt"), async : false}).responseText;
 scis = txt.split('\r\n');
@@ -300,37 +297,23 @@ function createUI(show) {
   opt = document.createElement('option'); opt.text = 'Default'; opt.value = ""; sel.add(opt, null);
   col.appendChild(sel);
 
-  url = "https://raw.githubusercontent.com/thomas0809/ReviewerConfigure/master/journal.json"; 
-  $.get(url, function(data, status) {
-      var conf = JSON.parse(data);
-      var journal = window.location.href.replace(/.*\.manuscriptcentral\.com\//, '').replace(/[\/\?].*/, '');
-      //alert(journal);
-      if (!(journal in conf)) {
-        journal = "default";
-      }
-      sel = document.getElementById("roster");
-      sel.remove(0);
-      for (var i in conf[journal]['list']) {
-        var x = conf[journal]['list'][i];
-        var opt = document.createElement('option'); opt.text = x['name']; opt.value = x['id']; sel.add(opt, null);
-      }
-      sel.selectedIndex = conf[journal]['default'];
-      if (conf[journal]['option']) {
-        $(sel).show();
-      }
-  });
+  sel.remove(0);
+  var journal = window.location.href.replace(/.*\.editorialmanager\.com\//, '').replace("/Default.aspx", '');
+  var rosteID, selIndex;
+  switch(journal) {
+    case "bmefclone":
+      rosterID = "5d551094530c705f51c3edd0";
+      selIndex = 0;
+    default:
+      rosteID = "";
+      selIndex = 0;
+  }
+  var opt = document.createElement('option');
+  opt.text = journal;
+  opt.value = rosterID;
+  sel.add(opt, null);
+  sel.selectedIndex = selIndex;
 
-  /*sub = document.createElement("input");
-  sub.type = "image"; sub.src = chrome.extension.getURL("resource/title.png");
-  sub.style.width = "80px";
-  sub.style.marginTop = "4px"; sub.style.marginBottom = "4px"; sub.style.marginRight = "4px";
-  sub.align = "center"; sub.onclick = query;
-  col.appendChild(sub);
-  sub = document.createElement("input");
-  sub.type = "image"; sub.src = chrome.extension.getURL("resource/co-author.png");
-  sub.style.width = "80px"; sub.style.marginTop = "4px"; sub.style.marginBottom = "4px";
-  sub.align = "center"; sub.onclick = query;
-  col.appendChild(sub);*/
   row.appendChild(col);
   qtb.appendChild(row);
 
@@ -419,6 +402,9 @@ function createUI(show) {
   side.appendChild(table);
 
   document.body.appendChild(side);
+  frame = document.getElementById("content");
+  frameHtml = frame.contentDocument;
+  frameHtml.body.appendChild(side);
   setSide();
 
 }

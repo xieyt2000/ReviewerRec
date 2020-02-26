@@ -6,7 +6,7 @@ chrome.browserAction.onClicked.addListener(function(tab){
 });
 
 chrome.tabs.onUpdated.addListener(function(tadid, changeinfo, tab) {
-  if (changeinfo.status == "complete" && tab.url.match("manuscriptcentral.com") != null) {
+  if (changeinfo.status == "complete" && tab.url.match("editorialmanager.com") != null) {
     state = window.localStorage.getItem(tab.id);
     if (state == "true") {
       exec(tab, true);
@@ -31,7 +31,7 @@ chrome.tabs.onRemoved.addListener(function(tabId, removeInfo){
 });
 
 function exec(tab, show) {
-  if (tab.url.match("manuscriptcentral.com") != null) {
+  if (tab.url.match("editorialmanager.com") != null) {
     chrome.tabs.executeScript(tab.id, {file: 'libs/content.js', allFrames: true});
     chrome.tabs.executeScript(tab.id, {file: 'libs/scholarone.js', allFrames: true});
   }

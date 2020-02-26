@@ -6,17 +6,17 @@ function query() {
   $('#loading').show();
   $('#more').hide();
   $('#menu').hide();
-  document.getElementById('searchname').value = "";
-  document.getElementById('rankorder').selectedIndex = 0;
+  frameHtml.getElementById('searchname').value = "";
+  frameHtml.getElementById('rankorder').selectedIndex = 0;
   $('#rtb').empty();
-  var words = document.getElementById("keywords").value.split(",");
-  window.sessionStorage.keywords0 = document.getElementById("keywords").value;
+  var words = frameHtml.getElementById("keywords").value.split(",");
+  window.sessionStorage.keywords0 = frameHtml.getElementById("keywords").value;
   window.sessionStorage.displaynum = "20";
-  window.sessionStorage.inp1 = document.getElementById("hindex1").checked;
-  window.sessionStorage.inp2 = document.getElementById("hindex2").checked;
-  window.sessionStorage.inp3 = document.getElementById("hindex3").checked;
-  window.sessionStorage.inp4 = document.getElementById("hindex4").checked;
-  document.getElementById('rankorder').selectedIndex = 0;
+  window.sessionStorage.inp1 = frameHtml.getElementById("hindex1").checked;
+  window.sessionStorage.inp2 = frameHtml.getElementById("hindex2").checked;
+  window.sessionStorage.inp3 = frameHtml.getElementById("hindex3").checked;
+  window.sessionStorage.inp4 = frameHtml.getElementById("hindex4").checked;
+  frameHtml.getElementById('rankorder').selectedIndex = 0;
   wordlist = [];
   for (var i in words){
     if (words[i].length > 4){
@@ -66,7 +66,7 @@ function getExpertList(words) {
     lists.push([]);
     //var url = "https://api.aminer.org/api/search/people/multi?query="+words[i]+"&size=500";
     var url = "https://api.aminer.org/api/reviewer/search?query="+words[i]+"&size=100";
-    ele = document.getElementById('hindexform').elements;
+    ele = frameHtml.getElementById('hindexform').elements;
     h1 = 200; h2 = 0;
     if (ele[0].checked) { if (0 < h1)  h1 = 0;  if (10 > h2) h2 = 10; }
     if (ele[1].checked) { if (10 < h1) h1 = 10; if (20 > h2) h2 = 20; }
@@ -74,19 +74,19 @@ function getExpertList(words) {
     if (ele[3].checked) { if (30 < h1) h1 = 30; h2 = 200; }
     if (h1 != 200 && h2 != 0)
       url = url + "&hindex1=" + h1 + "&hindex2=" + h2;
-    if (document.getElementById('location').selectedIndex != 0) {
-      x = document.getElementById('location');
+    if (frameHtml.getElementById('location').selectedIndex != 0) {
+      x = frameHtml.getElementById('location');
       txt = x.options[x.selectedIndex].text;
       url = url + "&nation=" + txt;
     }
-    if (document.getElementById('language').selectedIndex != 0) {
-      x = document.getElementById('language');
+    if (frameHtml.getElementById('language').selectedIndex != 0) {
+      x = frameHtml.getElementById('language');
       txt = x.options[x.selectedIndex].text;
       url = url + "&language=" + txt;
     }
     //check if the user give a user ID
-    var roster = document.getElementById("rosterInput").value.replace(/\s/g, '');
-    if (!roster) roster = document.getElementById("roster").value;
+    var roster = frameHtml.getElementById("rosterInput").value.replace(/\s/g, '');
+    if (!roster) roster = frameHtml.getElementById("roster").value;
     url = url + "&roster=" + roster;
 
     $.get(url, function(data, status){
@@ -154,7 +154,7 @@ function statechange(strdata) {
 }
 
 function searchName() {
-  str = document.getElementById("searchname").value;
+  str = frameHtml.getElementById("searchname").value;
   explist = [];
   for (var i in expall) {
     if (expall[i].name.match(RegExp(str, 'i')) != null)
@@ -169,8 +169,8 @@ function searchNameAminer() {
   $('#more').hide();
   $('#menu').hide();
   $('#rtb').empty();
-  str = document.getElementById("searchname").value;
-  document.getElementById('rankorder').selectedIndex = 2;
+  str = frameHtml.getElementById("searchname").value;
+  frameHtml.getElementById('rankorder').selectedIndex = 2;
   explist = [];
   var url = "https://api.aminer.org/api/reviewer/search?query="+str+"&size=100";
   // var url = "https://api.aminer.org/api/search/person?query=" + str + "&size=100";
@@ -265,7 +265,7 @@ function filter() {
 }
 
 function changeOrder() {
-  od = document.getElementById('rankorder').selectedIndex;
+  od = frameHtml.getElementById('rankorder').selectedIndex;
   if (od == 0)
     explist.sort(function(a,b) {
       if (Number(a.relevance) > Number(b.relevance)) return -1;
