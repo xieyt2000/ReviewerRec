@@ -39,9 +39,10 @@
 	},
 	"tbd-cs" : {
 		"default" : 0,
-		"option" : false,
+		"option" : true,
 		"list" : [
-			{ "id" : "5e3b9296530c70a34641f96c", "name" : "tbd-cs Associate Editor" }
+			{ "id" : "56f1750f76d9110ef18db5fe", "name" : "tbd Reviewer" },
+			{ "id" : "5e60c7a14c775e93ef989522", "name" : "tbd Associate Editor" }
 		]
 	}
 }
