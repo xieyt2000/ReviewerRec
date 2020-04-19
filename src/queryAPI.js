@@ -65,33 +65,49 @@ function getExpertList(words) {
     //alert(words[i]);
     lists.push([]);
     //var url = "https://api.aminer.org/api/search/people/multi?query="+words[i]+"&size=500";
-    var url = "https://api.aminer.org/api/reviewer/search?query="+words[i]+"&size=100";
+    // var url = "https://api.aminer.org/api/reviewer/search?query="+words[i]+"&size=100";
     ele = document.getElementById('hindexform').elements;
     h1 = 200; h2 = 0;
     if (ele[0].checked) { if (0 < h1)  h1 = 0;  if (10 > h2) h2 = 10; }
     if (ele[1].checked) { if (10 < h1) h1 = 10; if (20 > h2) h2 = 20; }
     if (ele[2].checked) { if (20 < h1) h1 = 20; if (30 > h2) h2 = 30; }
     if (ele[3].checked) { if (30 < h1) h1 = 30; h2 = 200; }
-    if (h1 != 200 && h2 != 0)
-      url = url + "&hindex1=" + h1 + "&hindex2=" + h2;
+    // if (h1 != 200 && h2 != 0)
+      // url = url + "&hindex1=" + h1 + "&hindex2=" + h2;
     if (document.getElementById('location').selectedIndex != 0) {
       x = document.getElementById('location');
-      txt = x.options[x.selectedIndex].text;
-      url = url + "&nation=" + txt;
+      location = x.options[x.selectedIndex].text;
+      // url = url + "&nation=" + txt;
     }
     if (document.getElementById('language').selectedIndex != 0) {
       x = document.getElementById('language');
-      txt = x.options[x.selectedIndex].text;
-      url = url + "&language=" + txt;
+      language = x.options[x.selectedIndex].text;
+      // url = url + "&language=" + txt;
     }
     //check if the user give a user ID
     var roster = document.getElementById("rosterInput").value.replace(/\s/g, '');
     if (!roster) roster = document.getElementById("roster").value;
-    url = url + "&roster=" + roster;
+    // url = url + "&roster=" + roster;
 
-    $.get(url, function(data, status){
-      statechange(data);
-    });
+    // $.get(url, function(data, status){
+    //   statechange(data);
+    // });
+    $.ajax({
+      url: "https://innovaapi.aminer.cn/veneurecv/predictor/api/v1/valhalla/expert_rec/recommend/reviewers/",
+      type: "POST",
+      data: JSON.stringify({
+        "resp_type": "json",
+        "eb_src": "roster",
+        "eb_ids": [roster],
+        "query": words[i],
+        "condition": {
+          "h_index": [h1, h2]
+        }
+      }),
+      success: function (data) {
+        statechange(data);
+      }
+    })
     //testNewAlgorithm();
     function testNewAlgorithm(){
       var url = "http://166.111.7.105:9005/api/reviewer/query"
@@ -107,14 +123,28 @@ function getExpertList(words) {
   }
 }
 
-function statechange(strdata) {
-  data = JSON.parse(strdata);
-  //data = eval ("(" + strdata + ")");
-  //alert(data);
+function statechange(data) {
   var i = finished;
   finished = finished + 1;
   lists.push([]);
-  var res = data.results;
+  var res = data.data.persons;
+  for (var j in res) {
+    if (res[j].org != '' && res[j].org != null) {
+      res[j].affiliation = res[j].org;
+    } else {
+      res[j].affiliation = res[j].contact.affiliation;
+    }
+    res[j].email = res[j].contact.email;
+    res[j].citation = res[j].n_citation;
+    res[j].picture_url = res[j].avatar;
+    res[j].homepage = res[j].contact.homepage;
+    res[j].position = res[j].contact.position;
+    var interests = '';
+    for (var k in res[j].tags) {
+      interests += res[j].tags[k].t + ", "
+    }
+    res[j].interests = interests.substr(0, interests.length - 2);
+  }
   for (var j in res) {
     if (res[j].affiliation != '' && res[j].affiliation != null
       && res[j].email != '' && res[j].email != null) {
@@ -266,12 +296,12 @@ function filter() {
 
 function changeOrder() {
   od = document.getElementById('rankorder').selectedIndex;
-  if (od == 0)
-    explist.sort(function(a,b) {
-      if (Number(a.relevance) > Number(b.relevance)) return -1;
-      if (Number(a.relevance) < Number(b.relevance)) return 1;
-      return 0;
-    });
+  // if (od == 0)
+  //   explist.sort(function(a,b) {
+  //     if (Number(a.relevance) > Number(b.relevance)) return -1;
+  //     if (Number(a.relevance) < Number(b.relevance)) return 1;
+  //     return 0;
+  //   });
   if (od == 1)
     explist.sort(function(a,b) {
       if (Number(a.h_index) < Number(b.h_index)) return -1;

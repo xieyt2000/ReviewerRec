@@ -44,5 +44,12 @@
 			{ "id" : "5e60c7a14c775e93ef989522", "name" : "tbd Reviewer" },
 			{ "id" : "5e3b9296530c70a34641f96c", "name" : "tbd Associate Editor" }
 		]
+	},
+	"tcsvt" : {
+		"default" : 0,
+		"option" : false,
+		"list": [
+			{ "id" : "5e90364d4c775e493df13e5b", "name" : "tcsvt Reviewer" }
+		]
 	}
 }
