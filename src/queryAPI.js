@@ -392,7 +392,7 @@ function createRes() {
     col = document.createElement('td');
     col.style.width = "100%"; col.style.maxWidth = "100%";
     a = document.createElement("a");
-    a.href = "https://aminer.org/profile/"+explist[i].id;
+    a.href = "https://aminer.cn/profile/"+explist[i].id;
     a.target = "_blank";
     txt = document.createElement('span');
     txt.style.fontSize = "14px"; txt.style.fontWeight = "bold"; txt.style.color = "black";

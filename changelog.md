@@ -16,4 +16,12 @@ Notable changes of Reviewer Recommender after version 3.0.4 will be documented i
 
 ## [3.0.6]
 
--Update 5 years token
+- Update 5 years token
+
+## [3.0.7]
+
+- New algorithm.
+
+## [3.0.8]
+
+- Update profile url

@@ -3,7 +3,7 @@
   "description": "Reviewer Recommender",
   "version": "3.0.7",
   "permissions": [
-    "activeTab", "downloads", "<all_urls>", "tabs", "storage"
+    "activeTab"
   ],
   "browser_action": {
     "default_title": "Reviewer Recommender",
